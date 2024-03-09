@@ -19,7 +19,7 @@ function onTaskSubmit(event) {
 
 function createListEl(textValue) {
     const id = nanoid();
-    taskEl.insertAdjacentHTML("beforeend", `<li id=${id}>${textValue}<button type='button'>x</button></li>`)
+    taskEl.insertAdjacentHTML("beforeend", `<li id=${id}>${textValue}<button class="deleteBtn" type='button'>x</button></li>`)
     saveDataToLS(id, textValue);
 }
 
@@ -42,9 +42,29 @@ function localStorageDataMarkup() {
     if (!data) return
 
     const dataMarkUp = data.map(item => {
-        return `<li id=${item.id}> ${item.task} <button type='button'>x</button></li >`
+        return `<li id=${item.id}> ${item.task} <button class="deleteBtn"  type='button'>x</button></li >`
     }).join('')
 
     taskEl.insertAdjacentHTML("beforeend", dataMarkUp)
 }
 
+taskEl.addEventListener("click", onRemoveTask);
+
+function onRemoveTask(event) {
+if(!event.target.classList.contains("deleteBtn")) return;
+
+console.log(event.target.parentNode.id);
+
+const id = event.target.parentNode.id;
+
+const dataArray = JSON.parse(localStorage.getItem(TASK_KEY));
+
+const newData = dataArray.filter(listItem => listItem.id !== id);
+
+localStorage.setItem(TASK_KEY, JSON.stringify(newData));
+
+event.target.parentNode.remove();
+
+
+
+}
