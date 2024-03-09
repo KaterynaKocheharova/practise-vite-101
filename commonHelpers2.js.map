@@ -1,1 +1,1 @@
-{"version":3,"file":"commonHelpers2.js","sources":[],"sourcesContent":[],"names":[],"mappings":""}
+{"version":3,"file":"commonHelpers2.js","sources":["../src/page2.js"],"sourcesContent":["import { getLocalStorage } from \"./js/LSHelpers\";\nimport { TASK_KEY } from \"./js/consts\";\nimport { localStorageDataMarkup } from \"./js/dataMarkup\";\nimport \"./js/removeItem\";\n\nconsole.log(getLocalStorage(TASK_KEY))\nlocalStorageDataMarkup()"],"names":["getLocalStorage","TASK_KEY","localStorageDataMarkup"],"mappings":"kEAKA,QAAQ,IAAIA,EAAgBC,CAAQ,CAAC,EACrCC,EAAsB"}
