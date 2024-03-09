@@ -4,6 +4,7 @@ const form = document.querySelector("#task-form");
 const taskEl = document.querySelector('#task-list');
 const TASK_KEY = "tasks"
 
+localStorageDataMarkup()
 
 form.addEventListener("submit", onTaskSubmit);
 
@@ -31,6 +32,19 @@ function saveDataToLS(id, task) {
     }
 
     dataArray.push(obj);
-    
+
     localStorage.setItem(TASK_KEY, JSON.stringify(dataArray));
 }
+
+function localStorageDataMarkup() {
+    const data = JSON.parse(localStorage.getItem(TASK_KEY))
+
+    if (!data) return
+
+    const dataMarkUp = data.map(item => {
+        return `<li id=${item.id}> ${item.task} <button type='button'>x</button></li >`
+    }).join('')
+
+    taskEl.insertAdjacentHTML("beforeend", dataMarkUp)
+}
+
