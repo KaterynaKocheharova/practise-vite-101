@@ -1,12 +1,11 @@
 import { nanoid } from 'nanoid'
-
-const form = document.querySelector("#task-form");
-const taskEl = document.querySelector('#task-list');
-const TASK_KEY = "tasks"
+import { getLocalStorage, setLocalStorage } from './js/LSHelpers';
+import { refs } from './js/refs';
+import { TASK_KEY } from './js/consts';
 
 localStorageDataMarkup()
 
-form.addEventListener("submit", onTaskSubmit);
+refs.form.addEventListener("submit", onTaskSubmit);
 
 function onTaskSubmit(event) {
     event.preventDefault();
@@ -19,12 +18,12 @@ function onTaskSubmit(event) {
 
 function createListEl(textValue) {
     const id = nanoid();
-    taskEl.insertAdjacentHTML("beforeend", `<li id=${id}>${textValue}<button class="deleteBtn" type='button'>x</button></li>`)
+    refs.taskEl.insertAdjacentHTML("beforeend", `<li id=${id}>${textValue}<button class="deleteBtn" type='button'>x</button></li>`)
     saveDataToLS(id, textValue);
 }
 
 function saveDataToLS(id, task) {
-    const dataArray = JSON.parse(localStorage.getItem(TASK_KEY)) || [];
+    const dataArray = getLocalStorage(TASK_KEY) || [];
 
     const obj = {
         task,
@@ -33,11 +32,11 @@ function saveDataToLS(id, task) {
 
     dataArray.push(obj);
 
-    localStorage.setItem(TASK_KEY, JSON.stringify(dataArray));
+    setLocalStorage(TASK_KEY, dataArray);
 }
 
 function localStorageDataMarkup() {
-    const data = JSON.parse(localStorage.getItem(TASK_KEY))
+    const data = getLocalStorage(TASK_KEY)
 
     if (!data) return
 
@@ -45,26 +44,25 @@ function localStorageDataMarkup() {
         return `<li id=${item.id}> ${item.task} <button class="deleteBtn"  type='button'>x</button></li >`
     }).join('')
 
-    taskEl.insertAdjacentHTML("beforeend", dataMarkUp)
+    refs.taskEl.insertAdjacentHTML("beforeend", dataMarkUp)
 }
 
-taskEl.addEventListener("click", onRemoveTask);
+refs.taskEl.addEventListener("click", onRemoveTask);
 
 function onRemoveTask(event) {
-if(!event.target.classList.contains("deleteBtn")) return;
+    if (!event.target.classList.contains("deleteBtn")) return;
 
-console.log(event.target.parentNode.id);
+    console.log(event.target.parentNode.id);
 
-const id = event.target.parentNode.id;
+    const id = event.target.parentNode.id;
 
-const dataArray = JSON.parse(localStorage.getItem(TASK_KEY));
+    const dataArray = getLocalStorage(TASK_KEY)
 
-const newData = dataArray.filter(listItem => listItem.id !== id);
+    const newData = dataArray.filter(listItem => listItem.id !== id);
 
-localStorage.setItem(TASK_KEY, JSON.stringify(newData));
+    setLocalStorage(TASK_KEY, newData)
 
-event.target.parentNode.remove();
-
-
+    event.target.parentNode.remove();
 
 }
+
