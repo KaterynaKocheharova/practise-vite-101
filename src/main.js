@@ -20,5 +20,3 @@ function onTaskSubmit(event) {
 
 
 
-
-
