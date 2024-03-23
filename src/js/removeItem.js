@@ -1,11 +1,10 @@
 
-import { refs } from './refs';
 import { getLocalStorage, setLocalStorage } from './LSHelpers';
-import { TASK_KEY } from './consts';
 
+export function removeTask(element, key) {
+    element.addEventListener("click", onRemoveTask);
 
-refs.taskEl.addEventListener("click", onRemoveTask);
-
+    
 function onRemoveTask(event) {
     if (!event.target.classList.contains("deleteBtn")) return;
 
@@ -13,11 +12,12 @@ function onRemoveTask(event) {
 
     const id = event.target.parentNode.id;
 
-    const dataArray = getLocalStorage(TASK_KEY)
+    const dataArray = getLocalStorage(key)
 
     const newData = dataArray.filter(listItem => listItem.id !== id);
 
-    setLocalStorage(TASK_KEY, newData)
+    setLocalStorage(key, newData)
 
     event.target.parentNode.remove();
+}
 }
